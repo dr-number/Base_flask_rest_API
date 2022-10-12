@@ -7,4 +7,5 @@ def start():
     return "<p>Hello, flask!</p>"
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    #app.run(host="0.0.0.0")
+    app.run(port=5000)
