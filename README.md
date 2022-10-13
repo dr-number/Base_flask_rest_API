@@ -15,7 +15,7 @@ And run composition
 ## How to use
 
 HTTP Headers
-- Set http headers **content-type** to application/json
+- Set http headers **content-type** to **application/json**
 
 **Get all products**
 Method **GET**
