@@ -1,4 +1,4 @@
-# Base flask app
+# Base flask REST API
 
 ## How to use
 
