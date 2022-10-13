@@ -53,7 +53,7 @@ def get_all_products():
 
 
 @app.route('/product/', methods=['POST'])
-def add_product():
+def create_product():
     name = request.json['name']
     description = request.json['description']
     price = request.json['price']
@@ -93,6 +93,16 @@ def update_product(id):
     except Exception as e:
         return jsonify({ 'error': e.args[0] })
 
+
+@app.route('/product/<id>', methods=['DELETE'])
+def delete_product(id):
+    try:
+        product = Product.query.get(id)
+        db.session.delete(product)
+        db.session.commit()
+        return jsonify({ 'status': 'ok' })
+    except Exception as e:
+        return jsonify({ 'error': e.args[0] })
 
 @app.route('/product/<id>', methods=['GET'])
 def get_product(id):
