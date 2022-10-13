@@ -14,6 +14,9 @@ And run composition
 
 ## How to use
 
+HTTP Headers
+- Set http headers **content-type** to application/json
+
 **Get all products**
 Method **GET**
 
@@ -26,5 +29,12 @@ http://127.0.0.1:5000/products/
   "description": "Product number one",
   "price": 100.00,
   "qty": 3
+}
+```
+
+**Example response** (return product id)
+```json
+{
+  "id": 1
 }
 ```
