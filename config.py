@@ -6,3 +6,4 @@ class Config(object):
 
     BASE_PATH = f'sqlite:///{os.path.join(__BASE_DIR, __BASE_NAME)}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
