@@ -19,6 +19,7 @@ HTTP Headers
 
 ### Get all products
 http://127.0.0.1:5000/products/
+
 Method **GET**
 
 **Body JSON content**
@@ -49,6 +50,7 @@ Method **GET**
 
 ### Get product by id
 http://127.0.0.1:5000/product/<product_id>
+
 Method **GET**
 
 **Example response**
@@ -64,6 +66,7 @@ Method **GET**
 
 ### Create product
 http://127.0.0.1:5000/product/
+
 Method **POST**
 
 **Body JSON content**
@@ -85,6 +88,7 @@ Method **POST**
 
 ### Update product
 http://127.0.0.1:5000/product/<product_id>
+
 Method **PUT**
 
 **Example Body JSON content**
