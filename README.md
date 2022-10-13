@@ -19,10 +19,12 @@ Method **GET**
 
 http://127.0.0.1:5000/products/
 
-**JSON content**
+**Body JSON content**
+```json
 {
   "name": "Product_1",
   "description": "Product number one",
   "price": 100.00,
   "qty": 3
 }
+```
