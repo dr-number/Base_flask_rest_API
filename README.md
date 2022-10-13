@@ -1,4 +1,4 @@
-# Base flask REST API (with sqlite)
+# Base flask REST API with sqlite (with debuger)
 
 ## How to build
 
@@ -98,6 +98,18 @@ Method **PUT**
   "qty": 3
 }
 ```
+
+**Example response**
+```json
+{ 
+    "status": "ok"
+}
+```
+
+### Delete product
+http://127.0.0.1:5000/product/<product_id>
+
+Method **DELETE**
 
 **Example response**
 ```json
