@@ -38,3 +38,19 @@ http://127.0.0.1:5000/products/
   "id": 1
 }
 ```
+
+### Get product by id
+Method **GET**
+
+http://127.0.0.1:5000/product/<product_id>
+
+**Example response**
+```json
+{
+  "description": "Product number one",
+  "id": 1,
+  "name": "Product_1",
+  "price": 100.0,
+  "qty": 3
+}
+```
