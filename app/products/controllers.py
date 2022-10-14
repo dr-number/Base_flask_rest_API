@@ -1,10 +1,12 @@
-import json
 from ..database import db
 from flask import jsonify, request, Blueprint
 from .models import Product, ProductSchema
+from werkzeug.exceptions import BadRequest
 
 __STATUS_GOOD = { 'status': 'ok' }
 __STATUS_NOT_FOUND = { 'status': 'not found' }
+__ERROR_HEADER_JSON = { 'error': 'Not valid json in header!' }
+__ERROR_MAYBE_HEADER_JSON = { 'error': 'Bad request! Maybe not valid json in header!' }
 
 module = Blueprint('products', __name__)
 
@@ -14,34 +16,11 @@ products_schema = ProductSchema(many=True)
 def __get_error(e: Exception) -> str:
     return jsonify({ 'error': e.args[0] })
 
+def __get_error_bad_request(e: Exception) -> str:
+    return jsonify(__ERROR_MAYBE_HEADER_JSON)
 
-def __get_msg_initial_error(key: str = '') -> str:
-    if not key:
-        return jsonify({ 'error': f'Initial data not entered!' })
-
-    return jsonify({ 'error': f'Initial data \'{key}\' not entered!' })
-
-
-def __is_all_initial_data(request: request, keys: list) -> str:
-
-    if not request.content_type or request.content_type.lower() != 'application/json':
-        return jsonify({ 'error': 'Content type should be application/json!' })
-
-    data_json = None
-
-    try:
-        data_json = json.loads(request.data)
-    except Exception as e:
-        return jsonify({ 'error': 'Not valid json in header!' })
-
-    if not data_json:
-        return __get_msg_initial_error()
-
-    for key in keys:
-        if not key in data_json:
-            return __get_msg_initial_error(key)
-
-    return ''
+def __get_msg_initial_error(e: Exception) -> str:
+    return jsonify({ 'error': 'Initial data: \'' + e.args[0] + '\' not entered!' })
 
 
 @module.route('/products/', methods=['GET'])
@@ -72,27 +51,29 @@ def get_product(id):
 @module.route('/product/', methods=['POST'])
 def create_product():
 
-    is_error = __is_all_initial_data(request, ['name', 'description', 'price', 'qty'])
-
-    if is_error:
-        return is_error
-
-    data = request.json
-    new_product = Product(data['name'], data['description'], data['price'], data['qty'])
-
     try:
+        data = request.json
+        new_product = Product(data['name'], data['description'], data['price'], data['qty'])
+
         db.session.add(new_product)
         db.session.commit()
         return product_schema.jsonify({ 'id': new_product.id })
+
+    except ValueError as e:
+        return jsonify(__ERROR_HEADER_JSON)
+    except KeyError as e:
+        return __get_msg_initial_error(e)
+    except BadRequest as e:
+        return __get_error_bad_request(e)
     except Exception as e:
         return __get_error(e)
 
 
 @module.route('/product/<id>', methods=['PUT'])
 def update_product(id):
-    data = request.json
 
     try:
+        data = request.json
         product = Product.query.get(id)
 
         if 'name' in data:
@@ -109,6 +90,13 @@ def update_product(id):
     
         db.session.commit()
         return jsonify(__STATUS_GOOD)
+        
+    except ValueError as e:
+        return jsonify(__ERROR_HEADER_JSON)
+    except KeyError as e:
+        return __get_msg_initial_error(e)
+    except BadRequest as e:
+        return __get_error_bad_request(e)
     except Exception as e:
         return __get_error(e)
 
