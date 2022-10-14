@@ -12,6 +12,9 @@ And run composition
 
     docker-compose up -d
 
+## Help script
+- ./script_main.sh
+
 ## How to use
 
 HTTP Headers
